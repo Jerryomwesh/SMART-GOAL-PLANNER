@@ -45,7 +45,7 @@ function DepositForm({ goals, onMakeDeposit }) {
             <option value="">-- Select a Goal --</option>
             {goals.map(goal => (
               <option key={goal.id} value={goal.id}>
-                {goal.name} (${goal.savedAmount} / ${goal.targetAmount})
+                {goal.name} (${goal.savedAmount.toLocaleString()} / ${goal.targetAmount.toLocaleString()})
               </option>
             ))}
           </select>

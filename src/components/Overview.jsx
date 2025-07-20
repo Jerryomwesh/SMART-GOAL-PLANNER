@@ -39,7 +39,7 @@ function Overview({ goals }) {
         
         <div className="stat-card">
           <h3>Total Saved</h3>
-          <p>${totalSaved}</p>
+          <p>${totalSaved.toLocaleString()}</p>
         </div>
         
         <div className="stat-card">

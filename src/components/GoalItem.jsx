@@ -132,8 +132,8 @@ function GoalItem({ goal, onDeleteGoal, onUpdateGoal }) {
           </div>
           
           <p><strong>Category:</strong> {category}</p>
-          <p><strong>Target:</strong> ${targetAmount}</p>
-          <p><strong>Saved:</strong> ${savedAmount}</p>
+          <p><strong>Target:</strong> ${targetAmount.toLocaleString()}</p>
+          <p><strong>Saved:</strong> ${savedAmount.toLocaleString()}</p>
           <p><strong>Deadline:</strong> {new Date(deadline).toLocaleDateString()}</p>
           <p><strong>Days Left:</strong> {daysLeft > 0 ? daysLeft : 'Past deadline'}</p>
           
