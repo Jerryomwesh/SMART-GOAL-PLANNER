@@ -6,11 +6,23 @@ import DepositForm from './components/DepositForm'
 import Overview from './components/Overview'
 import LoadingSpinner from './components/LoadingSpinner'
 import ErrorMessage from './components/ErrorMessage'
+import Notification from './components/Notification'
 
 function App() {
   const [goals, setGoals] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
+  const [notification, setNotification] = useState(null)
+  
+  // Function to show a notification
+  const showNotification = (message, type) => {
+    setNotification({ message, type });
+  };
+  
+  // Function to clear notification
+  const clearNotification = () => {
+    setNotification(null);
+  };
 
   useEffect(() => {
     // Fetch goals from json-server
@@ -50,9 +62,11 @@ function App() {
       .then(data => {
         // Add the new goal to the state
         setGoals([...goals, data])
+        showNotification('Goal added successfully!', 'success')
       })
       .catch(error => {
         setError(error.message)
+        showNotification('Failed to add goal', 'error')
       })
   }
 
@@ -161,6 +175,9 @@ function App() {
           </>
         )}
       </main>
+      <footer className="app-footer">
+        <p>&copy; {new Date().getFullYear()} Smart Goal Planner</p>
+      </footer>
     </div>
   )
 }
