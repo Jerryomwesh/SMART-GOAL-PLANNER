@@ -4,6 +4,8 @@ import GoalList from './components/GoalList'
 import GoalForm from './components/GoalForm'
 import DepositForm from './components/DepositForm'
 import Overview from './components/Overview'
+import LoadingSpinner from './components/LoadingSpinner'
+import ErrorMessage from './components/ErrorMessage'
 
 function App() {
   const [goals, setGoals] = useState([])
@@ -140,8 +142,8 @@ function App() {
         <p>Track your financial goals and savings progress</p>
       </header>
       <main>
-        {loading && <p>Loading goals...</p>}
-        {error && <p className="error">Error: {error}</p>}
+        {loading && <LoadingSpinner />}
+        {error && <ErrorMessage message={error} />}
         {!loading && !error && (
           <>
             <Overview goals={goals} />
