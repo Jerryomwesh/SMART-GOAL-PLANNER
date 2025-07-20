@@ -1,5 +1,6 @@
 import React from 'react';
 import './GoalList.css';
+import GoalItem from './GoalItem';
 
 function GoalList({ goals }) {
   return (
@@ -9,17 +10,11 @@ function GoalList({ goals }) {
       {goals.length === 0 ? (
         <p>No goals available yet</p>
       ) : (
-        <ul className="goals">
+        <div className="goals-grid">
           {goals.map(goal => (
-            <li key={goal.id} className="goal-item">
-              <h3>{goal.name}</h3>
-              <p>Target: ${goal.targetAmount}</p>
-              <p>Saved: ${goal.savedAmount}</p>
-              <p>Category: {goal.category}</p>
-              <p>Deadline: {new Date(goal.deadline).toLocaleDateString()}</p>
-            </li>
+            <GoalItem key={goal.id} goal={goal} />
           ))}
-        </ul>
+        </div>
       )}
     </div>
   );
