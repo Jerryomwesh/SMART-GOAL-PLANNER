@@ -3,6 +3,7 @@ import './App.css'
 import GoalList from './components/GoalList'
 import GoalForm from './components/GoalForm'
 import DepositForm from './components/DepositForm'
+import Overview from './components/Overview'
 
 function App() {
   const [goals, setGoals] = useState([])
@@ -143,6 +144,8 @@ function App() {
         {error && <p className="error">Error: {error}</p>}
         {!loading && !error && (
           <>
+            <Overview goals={goals} />
+            
             <div className="forms-container">
               <GoalForm onAddGoal={handleAddGoal} />
               <DepositForm goals={goals} onMakeDeposit={handleMakeDeposit} />
