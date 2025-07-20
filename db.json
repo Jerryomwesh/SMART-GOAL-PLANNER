@@ -26,6 +26,15 @@
       "category": "Electronics",
       "deadline": "2024-07-20",
       "createdAt": "2024-03-10"
+    },
+    {
+      "id": "e3f9",
+      "name": "Retirement Savings",
+      "targetAmount": 100000,
+      "savedAmount": 5000,
+      "category": "Retirement",
+      "deadline": "2035-01-01",
+      "createdAt": "2025-07-20"
     }
   ]
 }
