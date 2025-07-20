@@ -2,7 +2,7 @@ import React from 'react';
 import './GoalList.css';
 import GoalItem from './GoalItem';
 
-function GoalList({ goals }) {
+function GoalList({ goals, onDeleteGoal }) {
   return (
     <div className="goal-list">
       <h2>My Savings Goals</h2>
@@ -12,7 +12,11 @@ function GoalList({ goals }) {
       ) : (
         <div className="goals-grid">
           {goals.map(goal => (
-            <GoalItem key={goal.id} goal={goal} />
+            <GoalItem 
+              key={goal.id} 
+              goal={goal} 
+              onDeleteGoal={onDeleteGoal} 
+            />
           ))}
         </div>
       )}

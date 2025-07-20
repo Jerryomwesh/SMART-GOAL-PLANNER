@@ -52,6 +52,24 @@ function App() {
       })
   }
 
+  // Function to delete a goal
+  const handleDeleteGoal = (id) => {
+    // Send DELETE request to json-server
+    fetch(`http://localhost:3000/goals/${id}`, {
+      method: 'DELETE',
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to delete goal')
+        }
+        // Remove the goal from the state
+        setGoals(goals.filter(goal => goal.id !== id))
+      })
+      .catch(error => {
+        setError(error.message)
+      })
+  }
+
   return (
     <div className="app-container">
       <header>
@@ -64,7 +82,7 @@ function App() {
         {!loading && !error && (
           <>
             <GoalForm onAddGoal={handleAddGoal} />
-            <GoalList goals={goals} />
+            <GoalList goals={goals} onDeleteGoal={handleDeleteGoal} />
           </>
         )}
       </main>
