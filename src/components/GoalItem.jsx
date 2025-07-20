@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './GoalItem.css';
 
-function GoalItem({ goal, onDeleteGoal }) {
+function GoalItem({ goal, onDeleteGoal, onUpdateGoal }) {
   const { id, name, targetAmount, savedAmount, category, deadline } = goal;
+  
+  const [isEditing, setIsEditing] = useState(false);
+  const [editedGoal, setEditedGoal] = useState({
+    name: name,
+    targetAmount: targetAmount,
+    category: category,
+    deadline: deadline
+  });
   
   // Calculate progress percentage
   const progressPercentage = Math.min(Math.round((savedAmount / targetAmount) * 100), 100);
@@ -14,25 +22,110 @@ function GoalItem({ goal, onDeleteGoal }) {
     }
   };
   
+  // Handle edit form input changes
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setEditedGoal({
+      ...editedGoal,
+      [name]: name === 'targetAmount' ? Number(value) : value
+    });
+  };
+  
+  // Handle edit form submission
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+    // Create updated goal object
+    const updatedGoal = {
+      ...goal,
+      ...editedGoal
+    };
+    
+    onUpdateGoal(id, updatedGoal);
+    setIsEditing(false);
+  };
+  
+  // Toggle edit mode
+  const toggleEdit = () => {
+    setIsEditing(!isEditing);
+  };
+  
   return (
     <div className="goal-item">
-      <h3>{name}</h3>
-      <p><strong>Category:</strong> {category}</p>
-      <p><strong>Target:</strong> ${targetAmount}</p>
-      <p><strong>Saved:</strong> ${savedAmount}</p>
-      <p><strong>Deadline:</strong> {new Date(deadline).toLocaleDateString()}</p>
-      
-      <div className="progress-bar">
-        <div 
-          className="progress-fill" 
-          style={{ width: `${progressPercentage}%` }}
-        ></div>
-      </div>
-      <p className="progress-text">{progressPercentage}% complete</p>
-      
-      <div className="goal-actions">
-        <button className="delete-btn" onClick={handleDelete}>Delete</button>
-      </div>
+      {isEditing ? (
+        <form onSubmit={handleSubmit} className="edit-form">
+          <div className="form-group">
+            <label>Name:</label>
+            <input
+              type="text"
+              name="name"
+              value={editedGoal.name}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          
+          <div className="form-group">
+            <label>Target Amount:</label>
+            <input
+              type="number"
+              name="targetAmount"
+              value={editedGoal.targetAmount}
+              onChange={handleChange}
+              min="1"
+              required
+            />
+          </div>
+          
+          <div className="form-group">
+            <label>Category:</label>
+            <input
+              type="text"
+              name="category"
+              value={editedGoal.category}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          
+          <div className="form-group">
+            <label>Deadline:</label>
+            <input
+              type="date"
+              name="deadline"
+              value={editedGoal.deadline}
+              onChange={handleChange}
+              required
+            />
+          </div>
+          
+          <div className="form-actions">
+            <button type="submit" className="save-btn">Save</button>
+            <button type="button" className="cancel-btn" onClick={toggleEdit}>Cancel</button>
+          </div>
+        </form>
+      ) : (
+        <>
+          <h3>{name}</h3>
+          <p><strong>Category:</strong> {category}</p>
+          <p><strong>Target:</strong> ${targetAmount}</p>
+          <p><strong>Saved:</strong> ${savedAmount}</p>
+          <p><strong>Deadline:</strong> {new Date(deadline).toLocaleDateString()}</p>
+          
+          <div className="progress-bar">
+            <div 
+              className="progress-fill" 
+              style={{ width: `${progressPercentage}%` }}
+            ></div>
+          </div>
+          <p className="progress-text">{progressPercentage}% complete</p>
+          
+          <div className="goal-actions">
+            <button className="edit-btn" onClick={toggleEdit}>Edit</button>
+            <button className="delete-btn" onClick={handleDelete}>Delete</button>
+          </div>
+        </>
+      )}
     </div>
   );
 }

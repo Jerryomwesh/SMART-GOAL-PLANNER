@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import './App.css'
 import GoalList from './components/GoalList'
 import GoalForm from './components/GoalForm'
+import DepositForm from './components/DepositForm'
 
 function App() {
   const [goals, setGoals] = useState([])
@@ -69,6 +70,31 @@ function App() {
         setError(error.message)
       })
   }
+  
+  // Function to update a goal
+  const handleUpdateGoal = (id, updatedGoal) => {
+    // Send PATCH request to json-server
+    fetch(`http://localhost:3000/goals/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updatedGoal),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to update goal')
+        }
+        return response.json()
+      })
+      .then(data => {
+        // Update the goal in the state
+        setGoals(goals.map(goal => goal.id === id ? data : goal))
+      })
+      .catch(error => {
+        setError(error.message)
+      })
+  }
 
   return (
     <div className="app-container">
@@ -82,7 +108,11 @@ function App() {
         {!loading && !error && (
           <>
             <GoalForm onAddGoal={handleAddGoal} />
-            <GoalList goals={goals} onDeleteGoal={handleDeleteGoal} />
+            <GoalList 
+              goals={goals} 
+              onDeleteGoal={handleDeleteGoal}
+              onUpdateGoal={handleUpdateGoal} 
+            />
           </>
         )}
       </main>

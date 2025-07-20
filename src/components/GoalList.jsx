@@ -2,7 +2,7 @@ import React from 'react';
 import './GoalList.css';
 import GoalItem from './GoalItem';
 
-function GoalList({ goals, onDeleteGoal }) {
+function GoalList({ goals, onDeleteGoal, onUpdateGoal }) {
   return (
     <div className="goal-list">
       <h2>My Savings Goals</h2>
@@ -15,7 +15,8 @@ function GoalList({ goals, onDeleteGoal }) {
             <GoalItem 
               key={goal.id} 
               goal={goal} 
-              onDeleteGoal={onDeleteGoal} 
+              onDeleteGoal={onDeleteGoal}
+              onUpdateGoal={onUpdateGoal} 
             />
           ))}
         </div>
