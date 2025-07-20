@@ -95,6 +95,42 @@ function App() {
         setError(error.message)
       })
   }
+  
+  // Function to make a deposit to a goal
+  const handleMakeDeposit = (goalId, amount) => {
+    // Find the goal to update
+    const goalToUpdate = goals.find(goal => goal.id === goalId);
+    
+    if (!goalToUpdate) {
+      setError('Goal not found');
+      return;
+    }
+    
+    // Calculate new saved amount
+    const newSavedAmount = goalToUpdate.savedAmount + amount;
+    
+    // Send PATCH request to json-server
+    fetch(`http://localhost:3000/goals/${goalId}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ savedAmount: newSavedAmount }),
+    })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to make deposit')
+        }
+        return response.json()
+      })
+      .then(data => {
+        // Update the goal in the state
+        setGoals(goals.map(goal => goal.id === goalId ? data : goal))
+      })
+      .catch(error => {
+        setError(error.message)
+      })
+  }
 
   return (
     <div className="app-container">
@@ -107,7 +143,11 @@ function App() {
         {error && <p className="error">Error: {error}</p>}
         {!loading && !error && (
           <>
-            <GoalForm onAddGoal={handleAddGoal} />
+            <div className="forms-container">
+              <GoalForm onAddGoal={handleAddGoal} />
+              <DepositForm goals={goals} onMakeDeposit={handleMakeDeposit} />
+            </div>
+            
             <GoalList 
               goals={goals} 
               onDeleteGoal={handleDeleteGoal}
