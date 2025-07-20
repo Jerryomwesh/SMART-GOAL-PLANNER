@@ -82,9 +82,11 @@ function App() {
         }
         // Remove the goal from the state
         setGoals(goals.filter(goal => goal.id !== id))
+        showNotification('Goal deleted successfully!', 'success')
       })
       .catch(error => {
         setError(error.message)
+        showNotification('Failed to delete goal', 'error')
       })
   }
   
@@ -107,9 +109,11 @@ function App() {
       .then(data => {
         // Update the goal in the state
         setGoals(goals.map(goal => goal.id === id ? data : goal))
+        showNotification('Goal updated successfully!', 'success')
       })
       .catch(error => {
         setError(error.message)
+        showNotification('Failed to update goal', 'error')
       })
   }
   
@@ -143,14 +147,23 @@ function App() {
       .then(data => {
         // Update the goal in the state
         setGoals(goals.map(goal => goal.id === goalId ? data : goal))
+        showNotification(`Deposit of $${amount} made successfully!`, 'success')
       })
       .catch(error => {
         setError(error.message)
+        showNotification('Failed to make deposit', 'error')
       })
   }
 
   return (
     <div className="app-container">
+      {notification && (
+        <Notification
+          message={notification.message}
+          type={notification.type}
+          onClose={clearNotification}
+        />
+      )}
       <header>
         <h1>Smart Goal Planner</h1>
         <p>Track your financial goals and savings progress</p>
