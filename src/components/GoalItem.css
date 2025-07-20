@@ -5,10 +5,43 @@
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.goal-item h3 {
-  margin-top: 0;
-  color: #4caf50;
+.goal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   margin-bottom: 10px;
+}
+
+.goal-item h3 {
+  margin: 0;
+  color: #4caf50;
+}
+
+.status-badge {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+
+.status-completed {
+  background-color: #d4edda;
+  color: #155724;
+}
+
+.status-in-progress {
+  background-color: #cce5ff;
+  color: #004085;
+}
+
+.status-warning {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-overdue {
+  background-color: #f8d7da;
+  color: #721c24;
 }
 
 .goal-item p {

@@ -15,6 +15,26 @@ function GoalItem({ goal, onDeleteGoal, onUpdateGoal }) {
   // Calculate progress percentage
   const progressPercentage = Math.min(Math.round((savedAmount / targetAmount) * 100), 100);
   
+  // Calculate days left until deadline
+  const today = new Date();
+  const deadlineDate = new Date(deadline);
+  const daysLeft = Math.ceil((deadlineDate - today) / (1000 * 60 * 60 * 24));
+  
+  // Determine goal status
+  let status = "In Progress";
+  let statusClass = "status-in-progress";
+  
+  if (savedAmount >= targetAmount) {
+    status = "Completed";
+    statusClass = "status-completed";
+  } else if (daysLeft < 0) {
+    status = "Overdue";
+    statusClass = "status-overdue";
+  } else if (daysLeft <= 30) {
+    status = "Warning";
+    statusClass = "status-warning";
+  }
+  
   // Handle delete button click
   const handleDelete = () => {
     if (window.confirm(`Are you sure you want to delete the goal "${name}"?`)) {
@@ -106,11 +126,16 @@ function GoalItem({ goal, onDeleteGoal, onUpdateGoal }) {
         </form>
       ) : (
         <>
-          <h3>{name}</h3>
+          <div className="goal-header">
+            <h3>{name}</h3>
+            <span className={`status-badge ${statusClass}`}>{status}</span>
+          </div>
+          
           <p><strong>Category:</strong> {category}</p>
           <p><strong>Target:</strong> ${targetAmount}</p>
           <p><strong>Saved:</strong> ${savedAmount}</p>
           <p><strong>Deadline:</strong> {new Date(deadline).toLocaleDateString()}</p>
+          <p><strong>Days Left:</strong> {daysLeft > 0 ? daysLeft : 'Past deadline'}</p>
           
           <div className="progress-bar">
             <div 
